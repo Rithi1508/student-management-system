@@ -1,0 +1,763 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Documents | Student Management System</title>
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        /* Upload area - same shared classes as Mark Sheets */
+        .documents-upload-box {
+            margin-top: 18px;
+        }
+
+        /* Document list layout */
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .document-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .document-info > div:last-child {
+            min-width: 0;
+        }
+
+        .document-info h4,
+        .document-info p {
+            overflow-wrap: anywhere;
+        }
+
+        /* Same vertical action buttons as Mark Sheets */
+        .marksheet-file-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .marksheet-action-btn {
+            display: block;
+            width: 100%;
+            min-height: 40px;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border-radius: 7px;
+            border: 1px solid #1d4ed8;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .marksheet-action-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .marksheet-remove-btn {
+            background: #ffffff;
+            color: #b91c1c;
+            border-color: #dc2626;
+        }
+
+        .marksheet-remove-btn:hover {
+            background: #fef2f2;
+        }
+
+        .document-status {
+            overflow-wrap: anywhere;
+        }
+
+        .document-empty {
+            text-align: center;
+            padding: 24px 12px;
+        }
+
+        .document-empty-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .document-note {
+            margin-top: 16px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 560px) {
+            .marksheet-file-actions {
+                width: 100%;
+            }
+
+            .document-item {
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <div class="brand-name">Student Portal</div>
+                <div class="brand-caption">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-heading">Main Menu</div>
+
+            <a href="../dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span> Dashboard
+            </a>
+
+            <a href="profile.html" class="nav-link">
+                <span class="nav-icon">👤</span> My Profile
+            </a>
+
+            <a href="academic_details.html" class="nav-link">
+                <span class="nav-icon">🎓</span> Academic Details
+            </a>
+
+            <a href="attendance.html" class="nav-link">
+                <span class="nav-icon">📅</span> Attendance
+            </a>
+
+            <a href="mark_sheets.html" class="nav-link">
+                <span class="nav-icon">📊</span> Mark Sheets
+            </a>
+
+            <a href="documents.html" class="nav-link active">
+                <span class="nav-icon">📁</span> Documents
+            </a>
+
+            <a href="announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span> Announcements
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+                <div class="avatar" id="sidebarAvatar">DS</div>
+
+                <div>
+                    <div class="user-name" id="sidebarStudentName">
+                        Demo Student
+                    </div>
+                    <div class="user-role">Student Account</div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="logoutButton"
+                style="width: 100%; margin-top: 10px;"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <main class="main-area">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                    aria-controls="sidebar"
+                >
+                    ☰
+                </button>
+
+                <div>
+                    <div class="topbar-title">Documents</div>
+                    <div class="topbar-date" id="currentDate"></div>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+                <div class="avatar" id="topbarAvatar">DS</div>
+            </div>
+
+        </header>
+
+        <div class="content-area">
+
+            <h1 class="page-title">My Documents</h1>
+
+            <p class="page-subtitle">
+                Upload, view, download, and manage your personal
+                certificates and important documents.
+            </p>
+
+            <!-- Upload Documents -->
+
+            <section class="card" style="margin-bottom: 24px;">
+
+                <div class="section-header">
+                    <h2>Upload a Document</h2>
+                </div>
+
+                <p>
+                    Choose the document type and select a file
+                    from your device.
+                </p>
+
+                <form id="documentForm">
+
+                    <div class="form-group">
+
+                        <label for="documentType">
+                            Document Type
+                        </label>
+
+                        <select
+                            id="documentType"
+                            class="form-control"
+                            required
+                        >
+                            <option value="">Select document type</option>
+                            <option value="Aadhaar Card">Aadhaar Card</option>
+                            <option value="Birth Certificate">Birth Certificate</option>
+                            <option value="Community Certificate">Community Certificate</option>
+                            <option value="Income Certificate">Income Certificate</option>
+                            <option value="Transfer Certificate">Transfer Certificate (TC)</option>
+                            <option value="Conduct Certificate">Conduct Certificate</option>
+                            <option value="Bonafide Certificate">Bonafide Certificate</option>
+                            <option value="Other Documents">Other Documents</option>
+                        </select>
+
+                    </div>
+
+                    <div class="upload-box documents-upload-box">
+
+                        <div class="upload-icon">📄</div>
+
+                        <h3>Choose Your Document</h3>
+
+                        <p>Choose one file from your device.</p>
+
+                        <input
+                            type="file"
+                            id="documentFile"
+                            class="file-input"
+                            accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="upload-button"
+                            id="chooseDocumentButton"
+                        >
+                            ＋ Choose Files
+                        </button>
+
+                        <p>
+                            Supported formats: PDF, JPG, JPEG and PNG.
+                            Maximum size: 10 MB per file.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        style="margin-top: 16px;"
+                    >
+                        Select Document
+                    </button>
+
+                    <p
+                        id="documentMessage"
+                        class="form-message"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        No documents selected.
+                    </p>
+
+                </form>
+
+                <p class="document-note text-muted">
+                    Your selected files are only temporary browser previews.
+                    They are not uploaded to an account or saved permanently.
+                    Keep sensitive personal documents secure.
+                </p>
+
+            </section>
+
+            <!-- Saved Documents List -->
+
+            <section class="card">
+
+                <div class="section-header">
+                    <h2>My Documents</h2>
+                    <span class="file-count" id="documentCount">0 files</span>
+                </div>
+
+                <p class="text-muted">
+                    View or download your selected documents, or remove
+                    them from this temporary list.
+                </p>
+
+                <div class="document-list" id="documentList">
+
+                    <div class="empty-state document-empty">
+                        <div class="document-empty-icon">📂</div>
+                        <p>No documents selected.</p>
+                        <p>Choose a document above to get started.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Official Certificates Information -->
+
+            <section class="card" style="margin-top: 24px;">
+
+                <div class="section-header">
+                    <h2>Get Official Certificates</h2>
+                </div>
+
+                <p>
+                    You can obtain certificates from the relevant college
+                    or official government website when the service is
+                    available.
+                </p>
+
+                <p class="text-muted">
+                    This student portal does not issue official certificates.
+                    Use the issuing authority's official website to apply
+                    for or download a certificate.
+                </p>
+
+            </section>
+
+            <footer class="footer">
+                Student Management System
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const storedData = sessionStorage.getItem("studentData");
+
+    let studentName = "Demo Student";
+
+    if (storedData) {
+        try {
+            const student = JSON.parse(storedData);
+
+            if (
+                typeof student.name === "string" &&
+                student.name.trim()
+            ) {
+                studentName = student.name.trim();
+            }
+        } catch (error) {
+            console.error("Unable to read student data.");
+        }
+    }
+
+    const initials = studentName
+        .split(/\s+/)
+        .slice(0, 2)
+        .map(part => part.charAt(0).toUpperCase())
+        .join("") || "S";
+
+    document.getElementById("sidebarStudentName").textContent =
+        studentName;
+
+    document.getElementById("sidebarAvatar").textContent = initials;
+    document.getElementById("topbarAvatar").textContent = initials;
+
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+    const documentForm = document.getElementById("documentForm");
+    const documentType = document.getElementById("documentType");
+    const documentFile = document.getElementById("documentFile");
+    const chooseDocumentButton =
+        document.getElementById("chooseDocumentButton");
+    const documentMessage = document.getElementById("documentMessage");
+    const documentList = document.getElementById("documentList");
+    const documentCount = document.getElementById("documentCount");
+
+    const maxSize = 10 * 1024 * 1024;
+    const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
+    const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png"
+    ];
+
+    const documents = new Map();
+    const objectUrls = new Set();
+
+    let nextId = 1;
+
+    function showMessage(message, color) {
+        documentMessage.textContent = message;
+        documentMessage.style.color = color || "";
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024 * 1024) {
+            return (bytes / 1024).toFixed(1) + " KB";
+        }
+
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    function createAction(label, handler) {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "marksheet-action-btn";
+
+        if (label === "Remove") {
+            button.classList.add("marksheet-remove-btn");
+        }
+
+        button.textContent = label;
+        button.addEventListener("click", handler);
+
+        return button;
+    }
+
+    function createFileUrl(file) {
+        const url = URL.createObjectURL(file);
+        objectUrls.add(url);
+        return url;
+    }
+
+    function removeFileUrl(url) {
+        if (objectUrls.has(url)) {
+            URL.revokeObjectURL(url);
+            objectUrls.delete(url);
+        }
+    }
+
+    function renderDocuments() {
+        documentList.replaceChildren();
+
+        documentCount.textContent =
+            documents.size +
+            (documents.size === 1 ? " file" : " files");
+
+        if (documents.size === 0) {
+            const empty = document.createElement("div");
+            empty.className = "empty-state document-empty";
+
+            const icon = document.createElement("div");
+            icon.className = "document-empty-icon";
+            icon.textContent = "📂";
+
+            const message = document.createElement("p");
+            message.textContent = "No documents selected.";
+
+            const help = document.createElement("p");
+            help.textContent = "Choose a document above to get started.";
+
+            empty.append(icon, message, help);
+            documentList.appendChild(empty);
+
+            return;
+        }
+
+        documents.forEach(function (entry, id) {
+            const article = document.createElement("article");
+            article.className = "document-item";
+
+            const info = document.createElement("div");
+            info.className = "document-info";
+
+            const icon = document.createElement("div");
+            icon.className = "document-icon";
+            icon.textContent =
+                entry.file.type === "application/pdf" ? "📕" : "🖼️";
+
+            const details = document.createElement("div");
+
+            const heading = document.createElement("h4");
+            heading.textContent = entry.type;
+
+            const description = document.createElement("p");
+            description.textContent =
+                entry.file.name + " · " +
+                formatSize(entry.file.size) +
+                " · Temporary preview";
+
+            const status = document.createElement("span");
+            status.className = "badge badge-warning document-status";
+            status.textContent = "Not Uploaded";
+
+            details.append(heading, description, status);
+            info.append(icon, details);
+
+            const actions = document.createElement("div");
+            actions.className = "marksheet-file-actions";
+
+            // View
+            actions.appendChild(
+                createAction("View", function () {
+                    const url = createFileUrl(entry.file);
+                    const newWindow = window.open(url, "_blank");
+
+                    if (!newWindow) {
+                        removeFileUrl(url);
+
+                        showMessage(
+                            "The preview window was blocked. Allow pop-ups " +
+                            "for this site and try again.",
+                            "#dc2626"
+                        );
+                    } else {
+                        showMessage(
+                            "Opening your selected document.",
+                            "#16a34a"
+                        );
+                    }
+                })
+            );
+
+            // Download
+            actions.appendChild(
+                createAction("Download", function () {
+                    const url = createFileUrl(entry.file);
+                    const link = document.createElement("a");
+
+                    link.href = url;
+                    link.download = entry.file.name;
+
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+
+                    showMessage(
+                        "Download requested for " + entry.file.name + ".",
+                        "#16a34a"
+                    );
+
+                    // Keep the URL available briefly for the download.
+                    window.setTimeout(function () {
+                        removeFileUrl(url);
+                    }, 60000);
+                })
+            );
+
+            // Remove
+            actions.appendChild(
+                createAction("Remove", function () {
+                    removeFileUrl(entry.url);
+                    documents.delete(id);
+
+                    renderDocuments();
+
+                    showMessage(
+                        "Document removed from the temporary list. " +
+                        "No server copy was deleted because the file " +
+                        "was not uploaded.",
+                        "#16a34a"
+                    );
+                })
+            );
+
+            article.append(info, actions);
+            documentList.appendChild(article);
+        });
+    }
+
+    // Open file picker
+    chooseDocumentButton.addEventListener("click", function () {
+        documentFile.click();
+    });
+
+    // Validate selected file
+    documentFile.addEventListener("change", function () {
+        const file = documentFile.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const extension = file.name.split(".").pop().toLowerCase();
+
+        const validExtension = allowedExtensions.includes(extension);
+        const validType =
+            allowedTypes.includes(file.type) ||
+            (file.type === "" && validExtension);
+
+        if (!validExtension || !validType) {
+            showMessage(
+                "Please select a PDF, JPG, JPEG, or PNG file.",
+                "#dc2626"
+            );
+
+            documentFile.value = "";
+            return;
+        }
+
+        if (file.size === 0) {
+            showMessage("The selected file is empty.", "#dc2626");
+            documentFile.value = "";
+            return;
+        }
+
+        if (file.size > maxSize) {
+            showMessage(
+                "The file is larger than 10 MB. Please choose a smaller file.",
+                "#dc2626"
+            );
+
+            documentFile.value = "";
+            return;
+        }
+
+        showMessage(
+            "Selected: " + file.name +
+            ". Choose a document type and click Select Document.",
+            "#16a34a"
+        );
+    });
+
+    // Add selected document to temporary list
+    documentForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const selectedType = documentType.value;
+        const selectedFile = documentFile.files[0];
+
+        if (!selectedType || !selectedFile) {
+            showMessage(
+                "Please select a document type and file.",
+                "#dc2626"
+            );
+            return;
+        }
+
+        const extension = selectedFile.name.split(".").pop().toLowerCase();
+
+        if (
+            !allowedExtensions.includes(extension) ||
+            (
+                selectedFile.type !== "" &&
+                !allowedTypes.includes(selectedFile.type)
+            )
+        ) {
+            showMessage(
+                "Please select a valid PDF, JPG, JPEG, or PNG file.",
+                "#dc2626"
+            );
+            return;
+        }
+
+        if (selectedFile.size === 0 || selectedFile.size > maxSize) {
+            showMessage(
+                "The file must be greater than 0 bytes and no larger than 10 MB.",
+                "#dc2626"
+            );
+            return;
+        }
+
+        const duplicate = Array.from(documents.values()).some(function (entry) {
+            return entry.type === selectedType &&
+                entry.file.name === selectedFile.name &&
+                entry.file.size === selectedFile.size &&
+                entry.file.lastModified === selectedFile.lastModified;
+        });
+
+        if (duplicate) {
+            showMessage(
+                "This document has already been selected.",
+                "#dc2626"
+            );
+            return;
+        }
+
+        const url = createFileUrl(selectedFile);
+
+        documents.set(nextId++, {
+            type: selectedType,
+            file: selectedFile,
+            url: url
+        });
+
+        renderDocuments();
+
+        showMessage(
+            "Document added to the temporary list. It is not saved " +
+            "to your account yet.",
+            "#16a34a"
+        );
+
+        documentForm.reset();
+    });
+
+    // Release temporary URLs when leaving the page
+    window.addEventListener("pagehide", function () {
+        objectUrls.forEach(function (url) {
+            URL.revokeObjectURL(url);
+        });
+
+        objectUrls.clear();
+    });
+
+    renderDocuments();
+});
+</script>
+
+</body>
+</html>

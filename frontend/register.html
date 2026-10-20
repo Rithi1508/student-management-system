@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #1d4ed8;
+            text-align: center;
+        }
+
+        p {
+            color: #64748b;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            margin-top: 16px;
+            overflow-wrap: anywhere;
+            line-height: 1.5;
+        }
+
+        a {
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Student Account</h1>
+        <p>Register to access the student portal.</p>
+
+        <form id="registerForm">
+            <label for="fullName">Full Name</label>
+            <input
+                type="text"
+                id="fullName"
+                required
+                maxlength="120"
+                autocomplete="name"
+                placeholder="Enter your full name"
+            >
+
+            <label for="email">Email Address</label>
+            <input
+                type="email"
+                id="email"
+                required
+                maxlength="254"
+                autocomplete="email"
+                placeholder="Enter your email"
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                required
+                minlength="8"
+                autocomplete="new-password"
+                placeholder="Create a password (8+ characters)"
+            >
+
+            <button type="submit" id="registerButton">
+                Create Account
+            </button>
+        </form>
+
+        <div id="message" role="status" aria-live="polite"></div>
+
+        <p>
+            Already registered?
+            <a href="login.html">Go to Login</a>
+        </p>
+    </div>
+
+    <script>
+        const form = document.getElementById("registerForm");
+        const message = document.getElementById("message");
+        const button = document.getElementById("registerButton");
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            message.textContent = "";
+            button.disabled = true;
+            button.textContent = "Creating account...";
+
+            const full_name = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch(
+                    "http://127.0.0.1:5000/api/auth/register",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            full_name,
+                            email,
+                            password
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message || data.error || "Registration failed."
+                    );
+                }
+
+                message.textContent =
+                    "Account created successfully! You can now log in.";
+                message.style.color = "green";
+                form.reset();
+
+            } catch (error) {
+                message.textContent =
+                    error.message === "Failed to fetch"
+                        ? "Cannot reach the backend. Check that Flask is running."
+                        : error.message;
+
+                message.style.color = "crimson";
+            } finally {
+                button.disabled = false;
+                button.textContent = "Create Account";
+            }
+        });
+    </script>
+</body>
+</html>

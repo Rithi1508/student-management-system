@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Sheets | Student Management System</title>
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+    .marksheet-file-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 120px;
+        flex-shrink: 0;
+    }
+
+    .marksheet-action-btn {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        border-radius: 7px;
+        border: 1px solid #1d4ed8;
+        background: #2563eb;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .marksheet-action-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .marksheet-remove-btn {
+        background: #ffffff;
+        color: #b91c1c;
+        border-color: #dc2626;
+    }
+
+    .marksheet-remove-btn:hover {
+        background: #fef2f2;
+    }
+</style>
+
+</head>
+
+<body>
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <div class="brand-name">Student Portal</div>
+                <div class="brand-caption">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-heading">Main Menu</div>
+
+            <a href="../dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span> Dashboard
+            </a>
+
+            <a href="profile.html" class="nav-link">
+                <span class="nav-icon">👤</span> My Profile
+            </a>
+
+            <a href="academic_details.html" class="nav-link">
+                <span class="nav-icon">🎓</span> Academic Details
+            </a>
+
+            <a href="attendance.html" class="nav-link">
+                <span class="nav-icon">📅</span> Attendance
+            </a>
+
+            <a href="mark_sheets.html" class="nav-link active">
+                <span class="nav-icon">📊</span> Mark Sheets
+            </a>
+
+            <a href="documents.html" class="nav-link">
+                <span class="nav-icon">📁</span> Documents
+            </a>
+
+            <a href="announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span> Announcements
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-user">
+                <div class="avatar" id="sidebarAvatar">S</div>
+                <div>
+                    <div class="user-name" id="sidebarStudentName">
+                        Student
+                    </div>
+                    <div class="user-role">Student Account</div>
+                </div>
+            </div>
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="logoutButton"
+                    style="width:100%; margin-top:10px;">
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-area">
+        <header class="topbar">
+            <div class="topbar-left">
+                <button type="button"
+                        class="menu-toggle"
+                        id="menuToggle"
+                        aria-label="Toggle navigation"
+                        aria-expanded="false"
+                        aria-controls="sidebar">
+                    ☰
+                </button>
+
+                <div>
+                    <div class="topbar-title">Mark Sheets</div>
+                    <div class="topbar-date" id="currentDate"></div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="avatar" id="topbarAvatar">S</div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <h1 class="page-title">My Mark Sheets</h1>
+            <p class="page-subtitle">
+                Keep your semester marksheets together so you can view
+                and download them when needed.
+            </p>
+
+<section class="card">
+    <div class="section-header">
+        <h2>Upload Mark Sheets</h2>
+    </div>
+
+    <p>
+        Upload your semester marksheets or other official academic
+        mark documents.
+    </p>
+
+    <div class="upload-box">
+        <div class="upload-icon">📄</div>
+
+        <h3>Upload Marksheet Document</h3>
+
+        <p>Choose one or more files from your device.</p>
+
+        <input
+            type="file"
+            id="marksheetInput"
+            class="file-input"
+            accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+            multiple
+        >
+        <p>
+            Supported formats: PDF, JPG, JPEG and PNG.
+            Maximum size: 10 MB per file.
+        </p>
+    </div>
+
+    <div
+        id="statusMessage"
+        class="notice"
+        role="status"
+        aria-live="polite">
+        No documents selected.
+        Your selected marksheets will appear here.
+    </div>
+</section>
+
+
+            <section class="card" style="margin-top:24px;">
+                <div class="section-header">
+                    <h2>My Uploaded Mark Sheets</h2>
+                    <span class="file-count" id="fileCount">0 files</span>
+                </div>
+
+                <p class="text-muted">
+                    View a document or download a copy to your device.
+                </p>
+
+                <div id="fileList" class="file-list">
+                    <div class="empty-state">
+                        <div style="font-size:32px;">📂</div>
+                        <p>No marksheets selected yet.</p>
+                        <p>Select a file above to get started.</p>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                Student Management System
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("marksheetInput");
+    const chooseButton = document.getElementById("chooseFilesButton");
+    const fileList = document.getElementById("fileList");
+    const fileCount = document.getElementById("fileCount");
+    const statusMessage = document.getElementById("statusMessage");
+
+    const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png"
+    ];
+
+    const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
+    const maxSize = 10 * 1024 * 1024;
+
+    const selectedFiles = new Map();
+    let nextId = 1;
+
+    const objectUrls = new Set();
+
+
+    // Format file size
+
+    function formatSize(bytes) {
+        if (bytes < 1024 * 1024) {
+            return (bytes / 1024).toFixed(1) + " KB";
+        }
+
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+
+    // Show status message
+
+    function showStatus(message) {
+        statusMessage.textContent = message;
+    }
+
+
+    // Create consistent action buttons
+
+    function createAction(label, handler) {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "marksheet-action-btn";
+
+        if (label === "Remove") {
+            button.classList.add("marksheet-remove-btn");
+        }
+
+        button.textContent = label;
+        button.addEventListener("click", handler);
+
+        return button;
+    }
+
+
+    // Create a temporary URL for a selected file
+
+    function createFileUrl(file) {
+
+        const url = URL.createObjectURL(file);
+
+        objectUrls.add(url);
+
+        return url;
+    }
+
+
+    // Render selected marksheets
+
+    function renderFiles() {
+
+        fileList.replaceChildren();
+
+        fileCount.textContent =
+            selectedFiles.size +
+            (selectedFiles.size === 1 ? " file" : " files");
+
+
+        if (selectedFiles.size === 0) {
+
+            const empty = document.createElement("div");
+
+            empty.className = "empty-state";
+
+            const icon = document.createElement("div");
+
+            icon.style.fontSize = "32px";
+            icon.textContent = "📂";
+
+            const message = document.createElement("p");
+
+            message.textContent = "No marksheets selected yet.";
+
+            empty.append(icon, message);
+
+            fileList.appendChild(empty);
+
+            return;
+        }
+
+
+        selectedFiles.forEach(function (entry, id) {
+
+            const item = document.createElement("article");
+
+            item.className = "file-item";
+
+
+            // File information
+
+            const info = document.createElement("div");
+
+            info.className = "file-info";
+
+
+            const icon = document.createElement("div");
+
+            icon.className = "file-icon";
+
+            icon.textContent =
+                entry.file.type === "application/pdf"
+                    ? "📕"
+                    : "🖼️";
+
+
+            const details = document.createElement("div");
+
+
+            const name = document.createElement("div");
+
+            name.className = "file-name";
+            name.textContent = entry.file.name;
+
+
+            const meta = document.createElement("div");
+
+            meta.className = "file-meta";
+
+            meta.textContent =
+                formatSize(entry.file.size) +
+                " · Selected on this device";
+
+
+            details.append(name, meta);
+
+            info.append(icon, details);
+
+
+            // Vertical action buttons
+
+            const actions = document.createElement("div");
+
+            actions.className = "marksheet-file-actions";
+
+
+            // VIEW
+
+            actions.appendChild(
+                createAction("View", function () {
+
+                    const url = createFileUrl(entry.file);
+
+                    const newWindow = window.open(url, "_blank");
+
+                    if (!newWindow) {
+                        showStatus(
+                            "The preview window was blocked. " +
+                            "Allow pop-ups for this site and try again."
+                        );
+                    }
+
+                })
+            );
+
+
+            // DOWNLOAD
+
+            actions.appendChild(
+                createAction("Download", function () {
+
+                    const url = createFileUrl(entry.file);
+
+                    const link = document.createElement("a");
+
+                    link.href = url;
+                    link.download = entry.file.name;
+
+                    document.body.appendChild(link);
+
+                    link.click();
+
+                    link.remove();
+
+                })
+            );
+
+
+            // REMOVE
+
+            actions.appendChild(
+                createAction("Remove", function () {
+
+                    selectedFiles.delete(id);
+
+                    renderFiles();
+
+                    showStatus(
+                        "File removed from this temporary preview. " +
+                        "It was not uploaded to the server."
+                    );
+
+                })
+            );
+
+
+            item.append(info, actions);
+
+            fileList.appendChild(item);
+
+        });
+
+    }
+
+
+    // Open file picker
+
+    chooseButton.addEventListener("click", function () {
+        input.click();
+    });
+
+
+    // Process selected files
+
+    input.addEventListener("change", function () {
+
+        const files = Array.from(input.files || []);
+
+        const rejected = [];
+
+        let addedCount = 0;
+
+
+        files.forEach(function (file) {
+
+            const extension = file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+            const validType =
+                allowedTypes.includes(file.type) ||
+                (
+                    file.type === "" &&
+                    allowedExtensions.includes(extension)
+                );
+
+            const validExtension =
+                allowedExtensions.includes(extension);
+
+
+            if (
+                !validExtension ||
+                (!validType && file.type !== "")
+            ) {
+                rejected.push(file.name + " (unsupported format)");
+                return;
+            }
+
+
+            if (file.size === 0) {
+                rejected.push(file.name + " (empty file)");
+                return;
+            }
+
+
+            if (file.size > maxSize) {
+                rejected.push(file.name + " (over 10 MB)");
+                return;
+            }
+
+
+            // Prevent selecting the same file twice
+
+            const duplicate = Array.from(
+                selectedFiles.values()
+            ).some(function (entry) {
+
+                return (
+                    entry.file.name === file.name &&
+                    entry.file.size === file.size &&
+                    entry.file.lastModified === file.lastModified
+                );
+
+            });
+
+
+            if (duplicate) {
+                return;
+            }
+
+
+            selectedFiles.set(nextId++, {
+                file: file
+            });
+
+            addedCount++;
+
+        });
+
+
+        renderFiles();
+
+
+        if (rejected.length > 0) {
+
+            showStatus(
+                "Some files were skipped: " + rejected.join(", ")
+            );
+
+        } else if (addedCount > 0) {
+
+            showStatus(
+                "Files selected for preview. They are not yet saved " +
+                "to your account. Secure server uploading will be " +
+                "connected later."
+            );
+
+        } else {
+
+            showStatus("No new files were added.");
+
+        }
+
+
+        // Allow selecting the same file again later
+
+        input.value = "";
+
+    });
+
+
+    // Student information
+
+    const storedData = sessionStorage.getItem("studentData");
+
+    let studentName = "Student";
+
+
+    if (storedData) {
+
+        try {
+
+            const student = JSON.parse(storedData);
+
+            if (
+                typeof student.name === "string" &&
+                student.name.trim()
+            ) {
+                studentName = student.name.trim();
+            }
+
+        } catch (error) {
+
+            console.error("Unable to read student data.");
+
+        }
+
+    }
+
+
+    const initials = studentName
+        .split(/\s+/)
+        .slice(0, 2)
+        .map(function (part) {
+            return part.charAt(0).toUpperCase();
+        })
+        .join("") || "S";
+
+
+    document.getElementById("sidebarStudentName").textContent =
+        studentName;
+
+    document.getElementById("sidebarAvatar").textContent =
+        initials;
+
+    document.getElementById("topbarAvatar").textContent =
+        initials;
+
+
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+
+    // Release temporary file URLs when leaving the page
+
+    window.addEventListener("pagehide", function () {
+
+        objectUrls.forEach(function (url) {
+            URL.revokeObjectURL(url);
+        });
+
+        objectUrls.clear();
+
+    });
+
+
+    // Initial display
+
+    renderFiles();
+
+});
+</script>
+
+</body>
+</html>

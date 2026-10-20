@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance | Student Management System</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .attendance-upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 28px 16px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .attendance-upload-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .attendance-file-card {
+            border: 1px solid #dbe3ee;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            background: #ffffff;
+        }
+
+        .attendance-file-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .attendance-file-icon {
+            font-size: 30px;
+            flex-shrink: 0;
+        }
+
+        .attendance-file-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .attendance-file-name {
+            font-weight: 600;
+            color: #1e293b;
+            overflow-wrap: anywhere;
+            margin-bottom: 5px;
+        }
+
+        .attendance-file-size {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .attendance-file-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .attendance-action-btn {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border-radius: 7px;
+            border: 1px solid #1d4ed8;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .attendance-action-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .attendance-remove-btn {
+            background: #ffffff;
+            color: #b91c1c;
+            border-color: #dc2626;
+        }
+
+        .attendance-remove-btn:hover {
+            background: #fef2f2;
+        }
+
+        .attendance-message {
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #1e40af;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .attendance-empty-state {
+            padding: 24px 12px;
+            text-align: center;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 560px) {
+            .attendance-file-row {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .attendance-file-details {
+                flex-basis: calc(100% - 55px);
+            }
+
+            .attendance-file-actions {
+                width: 100%;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <div class="brand-name">Student Portal</div>
+                <div class="brand-caption">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-heading">Main Menu</div>
+
+            <a href="../dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span> Dashboard
+            </a>
+
+            <a href="profile.html" class="nav-link">
+                <span class="nav-icon">👤</span> My Profile
+            </a>
+
+            <a href="academic_details.html" class="nav-link">
+                <span class="nav-icon">🎓</span> Academic Details
+            </a>
+
+            <a href="attendance.html" class="nav-link active">
+                <span class="nav-icon">📅</span> Attendance
+            </a>
+
+            <a href="mark_sheets.html" class="nav-link">
+                <span class="nav-icon">📊</span> Mark Sheets
+            </a>
+
+            <a href="documents.html" class="nav-link">
+                <span class="nav-icon">📁</span> Documents
+            </a>
+
+            <a href="announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span> Announcements
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+                <div class="avatar" id="sidebarAvatar">DS</div>
+
+                <div>
+                    <div class="user-name" id="sidebarStudentName">
+                        Demo Student
+                    </div>
+                    <div class="user-role">Student Account</div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="logoutButton"
+                style="width: 100%; margin-top: 10px;"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-area">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                    aria-controls="sidebar"
+                >
+                    ☰
+                </button>
+
+                <div>
+                    <div class="topbar-title">Attendance</div>
+                    <div class="topbar-date" id="currentDate"></div>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+                <div class="avatar" id="topbarAvatar">DS</div>
+            </div>
+
+        </header>
+
+
+        <div class="content-area">
+
+            <h1 class="page-title">Overall Attendance</h1>
+
+            <p class="page-subtitle">
+                Keep your consolidated attendance details and official
+                attendance documents in one place.
+            </p>
+
+
+            <!-- Overall attendance percentage -->
+
+            <section class="card" style="margin-bottom: 24px;">
+
+                <div class="section-header">
+                    <h2>Course Attendance Percentage</h2>
+                    <span class="badge">Awaiting official record</span>
+                </div>
+
+                <div
+                    id="attendancePercentage"
+                    style="font-size: 36px; font-weight: 700; margin: 20px 0 8px;"
+                >
+                    Not available
+                </div>
+
+                <p class="text-muted">
+                    Your overall attendance percentage for the entire
+                    course will appear here when your official attendance
+                    record is available.
+                </p>
+
+                <p class="text-muted" style="font-size: 13px;">
+                    No sample percentage is displayed. Your actual
+                    percentage must come from a verified college record
+                    or connected attendance data.
+                </p>
+
+            </section>
+
+
+            <!-- Attendance document upload -->
+
+            <section class="card" style="margin-bottom: 24px;">
+
+                <div class="section-header">
+                    <h2>Attendance Documents</h2>
+                </div>
+
+                <p class="text-muted">
+                    Upload your consolidated attendance certificate,
+                    overall attendance report, or other official
+                    attendance documents.
+                </p>
+
+                <div class="attendance-upload-box">
+
+                    <div class="attendance-upload-icon">📄</div>
+
+                    <h3 style="margin-bottom: 8px;">
+                        Upload Attendance Document
+                    </h3>
+
+                    <p class="text-muted" style="margin-bottom: 16px;">
+                        Choose one or more files from your device.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="attendanceFileInput"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        multiple
+                        hidden
+                    >
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="chooseFilesButton"
+                    >
+                        Choose Files
+                    </button>
+
+                    <p class="text-muted" style="font-size: 12px; margin-top: 12px;">
+                        Supported formats: PDF, JPG, JPEG and PNG.
+                        Maximum size: 10 MB per file.
+                    </p>
+
+                </div>
+
+                <div
+                    id="uploadMessage"
+                    class="attendance-message"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+                <div
+                    id="selectedFileCount"
+                    class="text-muted"
+                    style="font-size: 13px; margin-bottom: 12px;"
+                >
+                    No documents selected.
+                </div>
+
+                <div id="attendanceDocuments"></div>
+
+                <p class="text-muted" style="font-size: 12px; margin-top: 16px;">
+                    Important: Files currently remain only in this browser
+                    session. They are not uploaded to a server and will
+                    not automatically be available after refreshing the
+                    page or leaving it.
+                </p>
+
+            </section>
+
+
+            <footer class="footer">
+                Student Management System | Attendance
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Student information
+
+    const storedData = sessionStorage.getItem("studentData");
+
+    let student = { name: "Demo Student" };
+
+    if (storedData) {
+        try {
+            const parsedData = JSON.parse(storedData);
+
+            if (
+                parsedData &&
+                typeof parsedData.name === "string" &&
+                parsedData.name.trim()
+            ) {
+                student.name = parsedData.name.trim();
+            }
+        } catch (error) {
+            console.error("Unable to read student data.");
+        }
+    }
+
+    const initials = student.name
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map(part => part.charAt(0).toUpperCase())
+        .join("");
+
+    document.getElementById("sidebarStudentName").textContent =
+        student.name;
+
+    document.getElementById("sidebarAvatar").textContent =
+        initials || "S";
+
+    document.getElementById("topbarAvatar").textContent =
+        initials || "S";
+
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+
+    // Temporary attendance document previews
+
+    const fileInput =
+        document.getElementById("attendanceFileInput");
+
+    const chooseButton =
+        document.getElementById("chooseFilesButton");
+
+    const documentsContainer =
+        document.getElementById("attendanceDocuments");
+
+    const fileCount =
+        document.getElementById("selectedFileCount");
+
+    const uploadMessage =
+        document.getElementById("uploadMessage");
+
+    const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
+
+    const documents = [];
+
+
+    function showMessage(message) {
+        uploadMessage.textContent = message;
+        uploadMessage.hidden = false;
+    }
+
+
+    function clearMessage() {
+        uploadMessage.textContent = "";
+        uploadMessage.hidden = true;
+    }
+
+
+    function getExtension(filename) {
+        const parts = filename.split(".");
+
+        return parts.length > 1
+            ? parts.pop().toLowerCase()
+            : "";
+    }
+
+
+    function formatFileSize(bytes) {
+
+        if (bytes < 1024) {
+            return bytes + " bytes";
+        }
+
+        if (bytes < 1024 * 1024) {
+            return (bytes / 1024).toFixed(1) + " KB";
+        }
+
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+
+    function renderDocuments() {
+
+        documentsContainer.replaceChildren();
+
+        fileCount.textContent = documents.length === 0
+            ? "No documents selected."
+            : documents.length + (
+                documents.length === 1
+                    ? " document selected."
+                    : " documents selected."
+            );
+
+        if (documents.length === 0) {
+
+            const emptyState = document.createElement("div");
+
+            emptyState.className = "attendance-empty-state";
+
+            const message = document.createElement("p");
+
+            message.textContent =
+                "Your selected attendance documents will appear here.";
+
+            emptyState.appendChild(message);
+
+            documentsContainer.appendChild(emptyState);
+
+            return;
+        }
+
+
+        documents.forEach(function (documentItem, index) {
+
+            const card = document.createElement("div");
+
+            card.className = "attendance-file-card";
+
+
+            const row = document.createElement("div");
+
+            row.className = "attendance-file-row";
+
+
+            const icon = document.createElement("div");
+
+            icon.className = "attendance-file-icon";
+
+            icon.textContent =
+                documentItem.extension === "pdf" ? "📕" : "🖼️";
+
+
+            const details = document.createElement("div");
+
+            details.className = "attendance-file-details";
+
+
+            const name = document.createElement("div");
+
+            name.className = "attendance-file-name";
+
+            name.textContent = documentItem.file.name;
+
+
+            const size = document.createElement("div");
+
+            size.className = "attendance-file-size";
+
+            size.textContent = formatFileSize(documentItem.file.size);
+
+
+            details.appendChild(name);
+
+            details.appendChild(size);
+
+
+            // Buttons displayed vertically
+
+            const actions = document.createElement("div");
+
+            actions.className = "attendance-file-actions";
+
+
+            // View button
+
+            const viewButton = document.createElement("button");
+
+            viewButton.type = "button";
+
+            viewButton.className = "attendance-action-btn";
+
+            viewButton.textContent = "View";
+
+            viewButton.addEventListener("click", function () {
+
+                const newWindow = window.open(
+                    documentItem.url,
+                    "_blank"
+                );
+
+                if (!newWindow) {
+                    showMessage(
+                        "The preview window was blocked. Allow pop-ups for this site and try again."
+                    );
+                }
+            });
+
+
+            // Download button
+
+            const downloadLink = document.createElement("a");
+
+            downloadLink.className = "attendance-action-btn";
+
+            downloadLink.textContent = "Download";
+
+            downloadLink.href = documentItem.url;
+
+            downloadLink.download = documentItem.file.name;
+
+
+            // Remove button
+
+            const removeButton = document.createElement("button");
+
+            removeButton.type = "button";
+
+            removeButton.className =
+                "attendance-action-btn attendance-remove-btn";
+
+            removeButton.textContent = "Remove";
+
+            removeButton.addEventListener("click", function () {
+
+                URL.revokeObjectURL(documentItem.url);
+
+                documents.splice(index, 1);
+
+                renderDocuments();
+
+                showMessage(
+                    "Document removed from the temporary preview."
+                );
+            });
+
+
+            actions.appendChild(viewButton);
+
+            actions.appendChild(downloadLink);
+
+            actions.appendChild(removeButton);
+
+
+            row.appendChild(icon);
+
+            row.appendChild(details);
+
+            row.appendChild(actions);
+
+
+            card.appendChild(row);
+
+            documentsContainer.appendChild(card);
+
+        });
+
+    }
+
+
+    // Open the file picker
+
+    chooseButton.addEventListener("click", function () {
+
+        fileInput.click();
+
+    });
+
+
+    // Process selected files
+
+    fileInput.addEventListener("change", function () {
+
+        clearMessage();
+
+        const selectedFiles = Array.from(fileInput.files || []);
+
+        if (selectedFiles.length === 0) {
+            return;
+        }
+
+        const messages = [];
+
+        let addedCount = 0;
+
+
+        selectedFiles.forEach(function (file) {
+
+            const extension = getExtension(file.name);
+
+
+            if (!allowedExtensions.includes(extension)) {
+
+                messages.push(
+                    file.name + ": unsupported file format."
+                );
+
+                return;
+            }
+
+
+            if (file.size > MAX_FILE_SIZE) {
+
+                messages.push(
+                    file.name + ": file exceeds the 10 MB limit."
+                );
+
+                return;
+            }
+
+
+            if (file.size === 0) {
+
+                messages.push(
+                    file.name + ": empty files cannot be added."
+                );
+
+                return;
+            }
+
+
+            const duplicate = documents.some(function (item) {
+
+                return (
+                    item.file.name === file.name &&
+                    item.file.size === file.size &&
+                    item.file.lastModified === file.lastModified
+                );
+
+            });
+
+
+            if (duplicate) {
+
+                messages.push(
+                    file.name + ": this file is already selected."
+                );
+
+                return;
+            }
+
+
+            const url = URL.createObjectURL(file);
+
+
+            documents.push({
+                file: file,
+                extension: extension,
+                url: url
+            });
+
+
+            addedCount++;
+
+        });
+
+
+        renderDocuments();
+
+
+        if (messages.length > 0) {
+
+            showMessage(messages.join(" "));
+
+        } else if (addedCount > 0) {
+
+            showMessage(
+                addedCount +
+                (
+                    addedCount === 1
+                        ? " document added to the temporary preview."
+                        : " documents added to the temporary preview."
+                )
+            );
+
+        }
+
+
+        // Allow the same file to be selected again later.
+
+        fileInput.value = "";
+
+    });
+
+
+    // Initial empty state
+
+    renderDocuments();
+
+
+    // Release temporary URLs when leaving this page.
+
+    window.addEventListener("pagehide", function () {
+
+        documents.forEach(function (item) {
+
+            URL.revokeObjectURL(item.url);
+
+        });
+
+    });
+
+});
+</script>
+
+</body>
+</html>

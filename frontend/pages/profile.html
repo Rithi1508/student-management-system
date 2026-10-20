@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Student Management System</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+
+            <div>
+                <div class="brand-name">Student Portal</div>
+                <div class="brand-caption">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-heading">Main Menu</div>
+
+            <a href="../dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span> Dashboard
+            </a>
+
+            <a href="profile.html" class="nav-link active">
+                <span class="nav-icon">👤</span> My Profile
+            </a>
+
+            <a href="academic_details.html" class="nav-link">
+                <span class="nav-icon">🎓</span> Academic Details
+            </a>
+
+            <a href="attendance.html" class="nav-link">
+                <span class="nav-icon">📅</span> Attendance
+            </a>
+
+            <a href="mark_sheets.html" class="nav-link">
+                <span class="nav-icon">📊</span> Mark Sheets
+            </a>
+
+            <a href="documents.html" class="nav-link">
+                <span class="nav-icon">📁</span> Documents
+            </a>
+
+            <a href="announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span> Announcements
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-user">
+                <div class="avatar" id="sidebarAvatar">DS</div>
+
+                <div>
+                    <div class="user-name" id="sidebarStudentName">
+                        Demo Student
+                    </div>
+                    <div class="user-role">Student Account</div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="logoutButton"
+                style="width: 100%; margin-top: 10px;"
+            >
+                Logout
+            </button>
+        </div>
+
+    </aside>
+
+
+    <main class="main-area">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                    aria-controls="sidebar"
+                >
+                    ☰
+                </button>
+
+                <div>
+                    <div class="topbar-title">My Profile</div>
+                    <div class="topbar-date" id="currentDate"></div>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+                <div class="avatar" id="topbarAvatar">DS</div>
+            </div>
+
+        </header>
+
+
+        <div class="content-area">
+
+            <h1 class="page-title">My Profile</h1>
+
+            <p class="page-subtitle">
+                View your personal and contact information.
+            </p>
+
+
+            <section class="card" style="margin-bottom: 24px;">
+
+                <div class="profile-header">
+
+                    <div class="profile-avatar" id="profileAvatar">
+                        DS
+                    </div>
+
+                    <div>
+                        <h2 class="profile-name" id="profileName">
+                            Demo Student
+                        </h2>
+
+                        <p class="profile-meta" id="profileStudentId">
+                            Student ID: DEMO001
+                        </p>
+
+                        <p class="profile-meta" id="profileCourse">
+                            Computer Science
+                        </p>
+                    </div>
+
+                </div>
+
+                 <span class="badge badge-success">
+            Registered Account
+        </span>
+
+            </section>
+
+
+            <div class="grid-2">
+
+                <section class="card">
+
+                    <h2 class="card-title">Personal Information</h2>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value" id="detailName">
+                            Demo Student
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Student ID</div>
+                        <div class="detail-value" id="detailStudentId">
+                            DEMO001
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Date of Birth</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Gender</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                </section>
+
+
+                <section class="card">
+
+                    <h2 class="card-title">Contact Information</h2>
+
+                    <div class="detail-item">
+    <div class="detail-label">Email Address</div>
+    <div class="detail-value" id="detailEmail">Loading...</div>
+</div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Address</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                </section>
+
+
+                <section class="card">
+
+                    <h2 class="card-title">Academic Information</h2>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Course</div>
+                        <div class="detail-value" id="detailCourse">
+                            Computer Science
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Department</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Semester</div>
+                        <div class="detail-value" id="detailSemester">
+                            Semester 4
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <section class="card">
+
+                    <h2 class="card-title">College Information</h2>
+
+                    <div class="detail-item">
+                        <div class="detail-label">College Name</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Academic Year</div>
+                        <div class="detail-value">Not provided</div>
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <footer class="footer">
+                Student Management System | Frontend Demonstration
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    }
+
+    function showInitials(name) {
+        return (name || "Student")
+            .trim()
+            .split(/\s+/)
+            .slice(0, 2)
+            .map(part => part.charAt(0).toUpperCase())
+            .join("");
+    }
+
+    function display(value) {
+        return value === null || value === undefined || value === ""
+            ? "Not provided"
+            : value;
+    }
+
+    setText("currentDate", new Date().toLocaleDateString("en-IN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    }));
+
+    setText("profileName", "Loading...");
+    setText("detailName", "Loading...");
+    setText("detailEmail", "Loading...");
+
+    try {
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/profile",
+            {
+                method: "GET",
+                credentials: "include",
+                headers: { "Accept": "application/json" }
+            }
+        );
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+            setText("profileName", "Please log in");
+            setText("detailName", "Login required");
+            setText("detailEmail", "Not logged in");
+            return;
+        }
+
+        if (!response.ok || !data.success || !data.student) {
+            throw new Error(data.message || "Unable to load profile.");
+        }
+
+        const student = data.student;
+        const name = student.full_name || "Student";
+        const initials = showInitials(name);
+
+        // Profile header
+        setText("profileAvatar", initials);
+        setText("profileName", name);
+        setText("profileStudentId",
+            "Student ID: " + display(student.student_number));
+        setText("profileCourse", "Course: " + display(student.course));
+
+        // Personal and academic information
+        setText("detailName", name);
+        setText("detailStudentId", display(student.student_number));
+        setText("detailCourse", display(student.course));
+        setText("detailSemester", display(student.semester));
+        setText("detailEmail", display(student.email));
+
+        // Other profile fields, if these IDs exist in your HTML
+        setText("detailDOB", display(student.date_of_birth));
+        setText("detailGender", display(student.gender));
+        setText("detailPhone", display(student.phone));
+        setText("detailAddress", display(student.address));
+        setText("detailDepartment", display(student.department));
+        setText("detailCollege", display(student.college));
+        setText("detailAcademicYear", display(student.academic_year));
+
+        // Sidebar and top bar
+        setText("sidebarStudentName", name);
+        setText("sidebarAvatar", initials);
+        setText("topbarAvatar", initials);
+
+    } catch (error) {
+        console.error("Profile loading failed:", error);
+        setText("profileName", "Unable to load profile");
+        setText("detailName", "Unable to load");
+        setText("detailEmail", "Unable to load");
+        setText("profileStudentId", "Check the backend connection.");
+    }
+});
+</script>
+
+</body>
+</html>

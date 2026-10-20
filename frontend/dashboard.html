@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Student Management System</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <div class="brand-name">Student Portal</div>
+                <div class="brand-caption">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-heading">Main Menu</div>
+
+            <a href="dashboard.html" class="nav-link active">
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </a>
+
+            <a href="pages/profile.html" class="nav-link">
+                <span class="nav-icon">👤</span>
+                My Profile
+            </a>
+
+            <a href="pages/academic_details.html" class="nav-link">
+                <span class="nav-icon">🎓</span>
+                Academic Details
+            </a>
+
+            <a href="pages/attendance.html" class="nav-link">
+                <span class="nav-icon">📅</span>
+                Attendance
+            </a>
+
+            <a href="pages/mark_sheets.html" class="nav-link">
+                <span class="nav-icon">📊</span>
+                Mark Sheets
+            </a>
+
+            <a href="pages/documents.html" class="nav-link">
+                <span class="nav-icon">📁</span>
+                Documents
+            </a>
+
+            <a href="pages/announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span>
+                Announcements
+            </a>
+
+        </nav>
+
+        <!-- STUDENT ACCOUNT -->
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+                <div class="avatar" id="sidebarAvatar">S</div>
+
+                <div>
+                    <div class="user-name" id="sidebarStudentName">
+                        Student
+                    </div>
+                    <div class="user-role">Student Account</div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="logoutButton"
+                style="width: 100%; margin-top: 10px;">
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                    aria-controls="sidebar">
+                    ☰
+                </button>
+
+                <div>
+                    <div class="topbar-title">Dashboard</div>
+                    <div class="topbar-date" id="currentDate"></div>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+                <div class="avatar" id="topbarAvatar">S</div>
+            </div>
+
+        </header>
+
+        <!-- WELCOME CONTENT -->
+        <div class="content-area">
+
+            <section class="welcome-banner">
+
+                <div>
+                    <h1 id="welcomeMessage">
+                        Welcome to Your Student Portal!
+                    </h1>
+
+                    <p>
+                        Manage your academic information and stay
+                        updated with your college activities.
+                    </p>
+                </div>
+
+                <div class="welcome-icon">🎓</div>
+
+            </section>
+
+            <!-- STUDENT PAGE LINKS -->
+            <section style="margin-top: 28px;">
+
+                <div class="section-header">
+                    <h2>Explore Your Portal</h2>
+                </div>
+
+                <div class="quick-actions">
+
+                    <a href="pages/profile.html" class="quick-action">
+                        <div class="quick-action-icon">👤</div>
+                        <div>
+                            <strong>My Profile</strong>
+                            <small>View your personal details</small>
+                        </div>
+                    </a>
+
+                    <a href="pages/academic_details.html" class="quick-action">
+                        <div class="quick-action-icon">🎓</div>
+                        <div>
+                            <strong>Academic Details</strong>
+                            <small>View your course information</small>
+                        </div>
+                    </a>
+
+                    <a href="pages/attendance.html" class="quick-action">
+                        <div class="quick-action-icon">📅</div>
+                        <div>
+                            <strong>Attendance</strong>
+                            <small>Check your attendance records</small>
+                        </div>
+                    </a>
+
+                    <a href="pages/mark_sheets.html" class="quick-action">
+                        <div class="quick-action-icon">📊</div>
+                        <div>
+                            <strong>Mark Sheets</strong>
+                            <small>View your examination results</small>
+                        </div>
+                    </a>
+
+                    <a href="pages/documents.html" class="quick-action">
+                        <div class="quick-action-icon">📁</div>
+                        <div>
+                            <strong>Documents</strong>
+                            <small>Access your academic documents</small>
+                        </div>
+                    </a>
+
+                    <a href="pages/announcements.html" class="quick-action">
+                        <div class="quick-action-icon">📢</div>
+                        <div>
+                            <strong>Announcements</strong>
+                            <small>Read college updates</small>
+                        </div>
+                    </a>
+
+                </div>
+
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="footer">
+                Student Management System
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- JAVASCRIPT -->
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
+

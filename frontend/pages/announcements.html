@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements | Student Portal</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">S</div>
+                <div>
+                    <div class="brand-name">Student Portal</div>
+                    <div class="brand-caption">Student Dashboard</div>
+                </div>
+            </div>
+
+            
+<nav class="sidebar-nav">
+    <a class="nav-link" href="../dashboard.html">
+        <span class="nav-icon">▦</span>
+        Dashboard
+    </a>
+
+    <a class="nav-link" href="profile.html">
+        <span class="nav-icon">👤</span>
+        My Profile
+    </a>
+
+    <a class="nav-link" href="academic_details.html">
+        <span class="nav-icon">🎓</span>
+        Academic Details
+    </a>
+
+    <a class="nav-link" href="attendance.html">
+        <span class="nav-icon">📅</span>
+        Attendance
+    </a>
+
+    <a class="nav-link" href="mark_sheets.html">
+        <span class="nav-icon">📊</span>
+        Mark Sheets
+    </a>
+
+    <a class="nav-link" href="documents.html">
+        <span class="nav-icon">📁</span>
+        Documents
+    </a>
+
+    <a class="nav-link active" href="announcements.html">
+        <span class="nav-icon">📢</span>
+        Announcements
+    </a>
+</nav>
+ 
+
+            <div class="sidebar-bottom">
+                <button class="btn btn-secondary" type="button" id="logoutBtn">
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <div class="main-area">
+
+            <header class="topbar">
+                <div>
+                    <div class="topbar-title">Announcements</div>
+                    <div class="topbar-date">Student Portal / Announcements</div>
+                </div>
+            </header>
+
+            <main class="content-area">
+
+                <section class="page-section">
+                    <h1 class="page-title">Announcements</h1>
+                    <p class="page-subtitle">
+                        Stay updated with the latest student notices and information.
+                    </p>
+
+                    <div class="card">
+                        <div class="section-header">
+                            <h2>Latest Announcements</h2>
+                        </div>
+
+                        <div id="announcementsList" aria-live="polite">
+                            <div class="empty-state">
+                                Loading announcements...
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    Student Management System
+                </footer>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+
+    <script>
+        async function loadAnnouncements() {
+            const container = document.getElementById("announcementsList");
+
+            try {
+                const response = await fetch(
+                    "http://127.0.0.1:5000/api/announcements",
+                    { credentials: "include" }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    container.replaceChildren();
+
+                    const message = document.createElement("div");
+                    message.className = "notice";
+                    message.textContent =
+                        data.message || "Unable to load announcements.";
+
+                    container.appendChild(message);
+                    return;
+                }
+
+                const announcements = data.announcements || [];
+                container.replaceChildren();
+
+                if (announcements.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.className = "empty-state";
+                    empty.textContent =
+                        "No announcements are available right now.";
+
+                    container.appendChild(empty);
+                    return;
+                }
+
+                announcements.forEach(item => {
+                    const article = document.createElement("article");
+                    article.className = "announcement-item";
+
+                    const heading = document.createElement("h4");
+                    heading.textContent = item.title;
+
+                    const message = document.createElement("p");
+                    message.textContent = item.message;
+
+                    article.append(heading, message);
+
+                    if (item.published_at) {
+                        const date = document.createElement("span");
+                        date.className = "announcement-date";
+                        date.textContent = new Date(
+                            item.published_at
+                        ).toLocaleDateString();
+
+                        article.appendChild(date);
+                    }
+
+                    container.appendChild(article);
+                });
+
+            } catch (error) {
+                container.replaceChildren();
+
+                const notice = document.createElement("div");
+                notice.className = "notice";
+                notice.textContent =
+                    "Unable to connect to the server. Please try again.";
+
+                container.appendChild(notice);
+                console.error("Announcements error:", error);
+            }
+        }
+
+        loadAnnouncements();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Details | Student Portal</title>
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .semester-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .semester-select {
+            width: 100%;
+            max-width: 280px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: #fff;
+            font-size: 15px;
+            color: #1f2937;
+        }
+
+        .subjects-card {
+            overflow: hidden;
+        }
+
+        .subjects-heading {
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .empty-message {
+            padding: 28px 16px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .subjects-count {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .semester-panel {
+                align-items: stretch;
+            }
+
+            .semester-select {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <div class="brand-name">Student Portal</div>
+                <div class="brand-caption">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-heading">Main Menu</div>
+
+            <a href="../dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span> Dashboard
+            </a>
+
+            <a href="profile.html" class="nav-link">
+                <span class="nav-icon">👤</span> My Profile
+            </a>
+
+            <a href="academic_details.html" class="nav-link active">
+                <span class="nav-icon">🎓</span> Academic Details
+            </a>
+
+            <a href="attendance.html" class="nav-link">
+                <span class="nav-icon">📅</span> Attendance
+            </a>
+
+            <a href="mark_sheets.html" class="nav-link">
+                <span class="nav-icon">📊</span> Mark Sheets
+            </a>
+
+            <a href="documents.html" class="nav-link">
+                <span class="nav-icon">📁</span> Documents
+            </a>
+
+            <a href="announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span> Announcements
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-user">
+                <div class="avatar" id="sidebarAvatar">S</div>
+                <div>
+                    <div class="user-name" id="sidebarStudentName">
+                        Student
+                    </div>
+                    <div class="user-role">Student Account</div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="logoutButton"
+                style="width: 100%; margin-top: 10px;">
+                Logout
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-area">
+
+        <header class="topbar">
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                    aria-controls="sidebar">
+                    ☰
+                </button>
+
+                <div>
+                    <div class="topbar-title">Academic Details</div>
+                    <div class="topbar-date" id="currentDate"></div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="avatar" id="topbarAvatar">S</div>
+            </div>
+        </header>
+
+        <div class="content-area">
+
+            <h1 class="page-title">Academic Details</h1>
+
+            <p class="page-subtitle">
+                Select a semester to view its subjects and credits.
+            </p>
+
+            <!-- SEMESTER SELECTOR -->
+            <section class="card semester-panel">
+
+                <div>
+                    <h2 class="card-title">Select Semester</h2>
+                    <p class="text-muted">
+                        Choose your semester below.
+                    </p>
+                </div>
+
+                <select
+                    id="semesterSelect"
+                    class="semester-select"
+                    aria-label="Choose semester">
+
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+
+                </select>
+
+            </section>
+
+            <!-- SUBJECT TABLE -->
+            <section class="card subjects-card">
+
+                <div class="subjects-heading">
+                    <h2 class="card-title" id="semesterHeading">
+                        Semester 1 Subjects
+                    </h2>
+
+                    <p class="text-muted">
+                        Subject information and credit details.
+                    </p>
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Subject Name</th>
+                                <th>Credits</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="subjectsTableBody">
+                            <tr>
+                                <td colspan="3" class="empty-message">
+                                    Loading academic records...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <p class="subjects-count" id="subjectsCount"></p>
+
+            </section>
+
+            <footer class="footer">
+                Student Management System
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const semesterSelect = document.getElementById("semesterSelect");
+    const tableBody = document.getElementById("subjectsTableBody");
+    const semesterHeading = document.getElementById("semesterHeading");
+    const subjectsCount = document.getElementById("subjectsCount");
+
+    // Update the current date.
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+    // Display the logged-in student's name if provided by the login flow.
+    // This is only a display convenience, not an authentication check.
+    try {
+        const savedStudent = JSON.parse(
+            sessionStorage.getItem("studentData") || "null"
+        );
+
+        if (savedStudent && savedStudent.name) {
+            const name = savedStudent.name.trim();
+
+            document.getElementById("sidebarStudentName").textContent = name;
+
+            const initials = name
+                .split(/\s+/)
+                .slice(0, 2)
+                .map(part => part.charAt(0).toUpperCase())
+                .join("");
+
+            document.getElementById("sidebarAvatar").textContent =
+                initials || "S";
+
+            document.getElementById("topbarAvatar").textContent =
+                initials || "S";
+        }
+    } catch (error) {
+        console.warn("Student display information is unavailable.");
+    }
+
+    // Render subjects safely without inserting HTML from the API.
+    function renderSubjects(subjects) {
+        tableBody.replaceChildren();
+        subjectsCount.textContent = "";
+
+        if (!Array.isArray(subjects) || subjects.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 3;
+            cell.className = "empty-message";
+            cell.textContent =
+                "No subject records are available for this semester.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+            return;
+        }
+
+        subjects.forEach(function (subject) {
+            const row = document.createElement("tr");
+
+            [subject.subject_code, subject.subject_name, subject.credits]
+                .forEach(function (value) {
+                    const cell = document.createElement("td");
+
+                    cell.textContent =
+                        value === null || value === undefined || value === ""
+                            ? "Not available"
+                            : String(value);
+
+                    row.appendChild(cell);
+                });
+
+            tableBody.appendChild(row);
+        });
+
+        subjectsCount.textContent =
+            subjects.length + (subjects.length === 1
+                ? " subject"
+                : " subjects");
+    }
+
+    // Load records for the selected semester from the Python API.
+    async function loadSemesterSubjects() {
+        const semester = semesterSelect.value;
+
+        semesterHeading.textContent = "Semester " + semester + " Subjects";
+
+        tableBody.replaceChildren();
+        subjectsCount.textContent = "";
+
+        const loadingRow = document.createElement("tr");
+        const loadingCell = document.createElement("td");
+
+        loadingCell.colSpan = 3;
+        loadingCell.className = "empty-message";
+        loadingCell.textContent = "Loading academic records...";
+
+        loadingRow.appendChild(loadingCell);
+        tableBody.appendChild(loadingRow);
+
+        try {
+            const response = await fetch(
+                "http://127.0.0.1:5000/api/academic/subjects?semester=" +
+                encodeURIComponent(semester),
+                {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || data.success !== true) {
+                throw new Error(
+                    data.message || "Academic records are unavailable."
+                );
+            }
+
+            renderSubjects(data.subjects);
+
+        } catch (error) {
+            tableBody.replaceChildren();
+
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 3;
+            cell.className = "empty-message";
+
+            cell.textContent =
+                "Unable to load academic records. The backend API " +
+                "must be connected and the student must have records " +
+                "for this semester.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+
+            console.error("Academic records could not be loaded:", error);
+        }
+    }
+
+    semesterSelect.addEventListener("change", loadSemesterSubjects);
+
+    // Initial view.
+    loadSemesterSubjects();
+
+});
+</script>
+
+</body>
+</html>
